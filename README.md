@@ -13,6 +13,8 @@ To build the project, run the command `mvn clean package`. The compiled jar can 
 
 To run the project, run the command `java -jar target\calendar-schedule-1.0-SNAPSHOT.jar`
 
+Took 12 hours total
+
 # Example input and output
 
 ```
