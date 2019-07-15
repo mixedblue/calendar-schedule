@@ -4,6 +4,7 @@ import com.google.gson.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.lang.Exception;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -20,13 +21,12 @@ import java.util.Map;
  * interfere with the meeting day.
  * @author Sonia Thakur
  */
-public class CalendarSchedule implements Schedule {//javadocs, documentation
+public class CalendarSchedule implements Schedule {
     /**
      * Gets public holidays from Holiday API
      * @see <a href="https://holidayapi.com/">Holiday API</a>
      * @return mapping of holiday name to date
      */
-    @Override
     public Map<String, LocalDate> findHolidays() throws Exception {
         try {
             String strUrl = "https://holidayapi.com/v1/holidays";
@@ -35,6 +35,7 @@ public class CalendarSchedule implements Schedule {//javadocs, documentation
             URL url = new URL(strUrl + "?" + query);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
+            con.setConnectTimeout(5000);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -60,6 +61,9 @@ public class CalendarSchedule implements Schedule {//javadocs, documentation
         } catch (MalformedURLException | ProtocolException e) {
             System.out.println(e.getMessage());
             throw e;
+        } catch (Exception e) {
+            System.out.println("Could not retrieve Holidays from API");
+            return new HashMap<String, LocalDate>();
         }
     }
 
@@ -126,7 +130,6 @@ public class CalendarSchedule implements Schedule {//javadocs, documentation
      * @param date the date of a holiday or vacation
      * @return if the date is during the meeting
      */
-    @Override
     public boolean isDateDuringMeeting(ArrayList<LocalDate> meetings, LocalDate date) {
         for (LocalDate meeting: meetings) {
             if (date.equals(meeting)) {
