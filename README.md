@@ -14,6 +14,7 @@ Building and running the project requires maven.
 To build the project, run the command `mvn clean package`. The compiled jar can be found in the target folder.
 
 To run the project, run the command `java -jar target\calendar-schedule-1.0-SNAPSHOT.jar`
+To run the MVP in the project, run the command `java -jar target\calendar-schedule-1.0-SNAPSHOT.jar mvp`
 
 Took 13 hours total
 

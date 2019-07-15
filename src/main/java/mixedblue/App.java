@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class App {
     public static void main(String args[]) throws Exception{
-        if (args[0] == "mvp") {
+        if (args.length > 0 && args[0].equals("mvp")) {
             CalendarMVP calendar = new CalendarMVP();
             Map<String, LocalDate> breakDays = new HashMap<String, LocalDate>();
             boolean again = true;
