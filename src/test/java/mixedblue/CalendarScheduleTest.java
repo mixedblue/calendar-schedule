@@ -33,11 +33,11 @@ public class CalendarScheduleTest extends TestCase {
      */
     public void testApp() throws Exception{
         CalendarSchedule calendar = new CalendarSchedule();
-        Map<String, LocalDate> breakDays = calendar.findHolidays();
+        Map<String, LocalDate> breakDays = new HashMap<String, LocalDate>();
         String weekday = "Wednesday";
         CalendarSchedule.addVacations(breakDays, "Japan", 7, 13, 7, 27);
         Map<String, LocalDate> missedMeetings = new HashMap<>();
         int numMeetings = calendar.findNumMeetings(calendar.getMeetings(weekday), breakDays, missedMeetings);
-        assertEquals(numMeetings, 21);
+        assertEquals(22, numMeetings);
     }
 }
