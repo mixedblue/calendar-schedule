@@ -21,52 +21,7 @@ import java.util.Map;
  * interfere with the meeting day.
  * @author Sonia Thakur
  */
-public class CalendarSchedule implements Schedule {
-    /**
-     * Gets public holidays from Holiday API
-     * @see <a href="https://holidayapi.com/">Holiday API</a>
-     * @return mapping of holiday name to date
-     */
-    public Map<String, LocalDate> findHolidays() throws Exception {
-        try {
-            String strUrl = "https://holidayapi.com/v1/holidays";
-            int year = LocalDate.now().getYear() - 1;
-            String query = "key=5a386574-7dd7-42f0-8b31-9ad91656767a&country=US&year=" + year + "";
-            URL url = new URL(strUrl + "?" + query);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setConnectTimeout(5000);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            JsonArray holidayArr = new JsonParser().parse(response.toString()).getAsJsonObject().get("holidays").getAsJsonArray();
-            Map<String, LocalDate> breakDays = new HashMap<>();
-            for (JsonElement holidayElement: holidayArr) {
-                JsonObject holiday = holidayElement.getAsJsonObject();
-                if (holiday.get("public").getAsBoolean()) {
-                    String date = holiday.get("date").getAsString();
-                    String name = holiday.get("name").getAsString();
-                    int month = Integer.parseInt(date.substring(5, 7));
-                    int day = Integer.parseInt(date.substring(8));
-                    breakDays.put(name, LocalDate.of(year + 1, month, day));
-                }
-            }
-            return breakDays;
-
-        } catch (MalformedURLException | ProtocolException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            System.out.println("Could not retrieve Holidays from API");
-            return new HashMap<String, LocalDate>();
-        }
-    }
-
+public class CalendarMVP implements Schedule {
     /**
      * Generates a list of expected meetings
      * @param weekday the weekday the meetings are on
@@ -130,7 +85,6 @@ public class CalendarSchedule implements Schedule {
      * @param date the date of a holiday or vacation
      * @return if the date is during the meeting
      */
-    @Override
     public boolean isDateDuringMeeting(ArrayList<LocalDate> meetings, LocalDate date) {
         for (LocalDate meeting: meetings) {
             if (date.equals(meeting)) {

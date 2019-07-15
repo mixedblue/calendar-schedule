@@ -9,12 +9,6 @@ import java.util.Map;
  */
 public interface Schedule {
     /**
-     * Gets public holidays from Holiday API
-     * @see <a href="https://holidayapi.com/">Holiday API</a>
-     * @return mapping of holiday name to date
-     */
-    Map<String, LocalDate> findHolidays() throws Exception;
-    /**
      * Generates a list of expected meetings
      * @param weekday the weekday the meetings are on
      * @throws IllegalArgumentException if user mistypes the weekday
